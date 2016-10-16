@@ -8,7 +8,7 @@ VOLUME ["/var/cache/nginx"]
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
 
-RUN mkdir -p /var/www/live \
+RUN mkdir -p /var/cache/nginx/www/live \
   && build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && runtime_pkgs="ca-certificates openssl pcre zlib" \
   && apk --update add ${build_pkgs} ${runtime_pkgs} \
@@ -62,7 +62,6 @@ RUN mkdir -p /var/www/live \
   && adduser -D nginx \
   && rm -rf /tmp/* \
   && apk del ${build_pkgs} \
-  && rm -rf /var/cache/apk/* \
-  && chown -R nginx:nginx /var/www
+  && rm -rf /var/cache/apk/* 
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
