@@ -15,7 +15,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
   && tar xzf nginx-${NGINX_VERSION}.tar.gz \
   && wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz \
-  && tar xzf v${NGINX_RTMP_VERSION.tar.gz \
+  && tar xzf v${NGINX_RTMP_VERSION}.tar.gz \
   && cd /tmp/nginx-${NGINX_VERSION} \
   && ./configure \
     --prefix=/etc/nginx \
