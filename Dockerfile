@@ -6,6 +6,7 @@ CMD ["nginx", "-g", "daemon off;"]
 VOLUME ["/var/cache/nginx"]
 
 ENV NGINX_VERSION 1.11.5
+ENV NGINX_RTMP_VERSION 1.1.10
 
 RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && runtime_pkgs="ca-certificates openssl pcre zlib" \
@@ -13,6 +14,8 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && cd /tmp \
   && wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
   && tar xzf nginx-${NGINX_VERSION}.tar.gz \
+  && wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz \
+  && tar xzf v${NGINX_RTMP_VERSION.tar.gz \
   && cd /tmp/nginx-${NGINX_VERSION} \
   && ./configure \
     --prefix=/etc/nginx \
@@ -51,6 +54,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
     --with-file-aio \
     --with-http_v2_module \
     --with-ipv6 \
+    --add-module=../nginx-rtmp-module-${NGINX_RTMP_VERSION} \
   && make \
   && make install \
   && sed -i -e 's/#access_log  logs\/access.log  main;/access_log \/dev\/stdout;/' -e 's/#error_log  logs\/error.log  notice;/error_log stderr notice;/' /etc/nginx/nginx.conf \
