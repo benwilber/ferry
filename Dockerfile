@@ -8,7 +8,8 @@ VOLUME ["/var/cache/nginx"]
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
 
-RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
+RUN mkdir -p /var/www/live \
+  && build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && runtime_pkgs="ca-certificates openssl pcre zlib" \
   && apk --update add ${build_pkgs} ${runtime_pkgs} \
   && cd /tmp \
