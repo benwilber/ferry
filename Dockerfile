@@ -62,3 +62,5 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && rm -rf /tmp/* \
   && apk del ${build_pkgs} \
   && rm -rf /var/cache/apk/*
+
+COPY conf/nginx.conf /etc/nginx/nginx.conf
