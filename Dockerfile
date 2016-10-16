@@ -50,15 +50,12 @@ RUN mkdir -p /var/www/live \
     --with-stream \
     --with-stream_ssl_module \
     --with-http_slice_module \
-    --with-mail \
-    --with-mail_ssl_module \
     --with-file-aio \
     --with-http_v2_module \
     --with-ipv6 \
     --add-module=../nginx-rtmp-module-${NGINX_RTMP_VERSION} \
   && make \
   && make install \
-  && sed -i -e 's/#access_log  logs\/access.log  main;/access_log \/dev\/stdout;/' -e 's/#error_log  logs\/error.log  notice;/error_log stderr notice;/' /etc/nginx/nginx.conf \
   && adduser -D nginx \
   && rm -rf /tmp/* \
   && apk del ${build_pkgs} \
