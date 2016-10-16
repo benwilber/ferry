@@ -62,6 +62,7 @@ RUN mkdir -p /var/www/live \
   && adduser -D nginx \
   && rm -rf /tmp/* \
   && apk del ${build_pkgs} \
-  && rm -rf /var/cache/apk/*
+  && rm -rf /var/cache/apk/* \
+  && chown -R nginx /var/www
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
