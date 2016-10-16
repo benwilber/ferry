@@ -7,6 +7,7 @@ VOLUME ["/var/cache/nginx", "/var/www"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
+ENV RESOLVER 8.8.8.8
 
 RUN mkdir -p /var/www/live \
   && build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
