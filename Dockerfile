@@ -3,12 +3,13 @@ MAINTAINER Ben Wilber "https://github.com/benwilber"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
-VOLUME ["/var/cache/nginx/www/live"]
+VOLUME ["/var/cache/nginx", "/var/www"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
 
-RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
+RUN mkdir -p /var/www/live \
+  && build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && runtime_pkgs="ca-certificates openssl pcre zlib" \
   && apk --update add ${build_pkgs} ${runtime_pkgs} \
   && cd /tmp \
@@ -61,7 +62,6 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
   && adduser -D nginx \
   && rm -rf /tmp/* \
   && apk del ${build_pkgs} \
-  && rm -rf /var/cache/apk/* \
-  && chown -R nginx /var/cache/nginx
+  && rm -rf /var/cache/apk/*
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
