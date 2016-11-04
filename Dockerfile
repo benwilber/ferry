@@ -3,23 +3,23 @@ MAINTAINER Ben Wilber "https://github.com/benwilber"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
-VOLUME ["/var/cache/nginx", "/var/www"]
+VOLUME ["/var/cache/nginx"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
-ENV RESOLVER 8.8.8.8
 
-RUN mkdir -p /var/www/live \
-  && build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" \
-  && runtime_pkgs="ca-certificates openssl pcre zlib" \
-  && apk --update add ${build_pkgs} ${runtime_pkgs} \
-  && cd /tmp \
-  && wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
-  && tar xzf nginx-${NGINX_VERSION}.tar.gz \
-  && wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz \
-  && tar xzf v${NGINX_RTMP_VERSION}.tar.gz \
-  && cd /tmp/nginx-${NGINX_VERSION} \
-  && ./configure \
+ENV NGINX_URL "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz"
+ENV NGINX_RTMPURL "https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz"
+
+ENV BUILD_PACKAGES "build-base linux-headers openssl-dev pcre-dev wget zlib-dev"
+ENV RUNTIME_PACKAGES "ca-certificates openssl pcre zlib"
+
+RUN apk --update add ${BUILD_PACKAGES} ${RUNTIME_PACKAGES}
+RUN wget -qO- ${NGINX_URL} | tar zx -C /tmp
+RUN wget -qO- ${NGINX_RTMP_URL} | tar zx -C /tmp
+RUN mkdir -p /var/cache/nginx/www/live
+RUN cd /tmp/nginx-${NGINX_VERSION} && \
+    ./configure \
     --prefix=/etc/nginx \
     --sbin-path=/usr/sbin/nginx \
     --conf-path=/etc/nginx/nginx.conf \
@@ -54,12 +54,12 @@ RUN mkdir -p /var/www/live \
     --with-file-aio \
     --with-http_v2_module \
     --with-ipv6 \
-    --add-module=../nginx-rtmp-module-${NGINX_RTMP_VERSION} \
-  && make \
-  && make install \
-  && adduser -D nginx \
-  && rm -rf /tmp/* \
-  && apk del ${build_pkgs} \
-  && rm -rf /var/cache/apk/*
+    --add-module=../nginx-rtmp-module-${NGINX_RTMP_VERSION}
+
+RUN cd /tmp && make && make install
+RUN adduser -D nginx
+RUN rm -rf /tmp/*
+RUN apk del ${build_pkgs}
+RUN rm -rf /var/cache/apk/*
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
