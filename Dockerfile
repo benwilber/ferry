@@ -9,7 +9,7 @@ ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
 
 ENV NGINX_URL "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz"
-ENV NGINX_RTMPURL "https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz"
+ENV NGINX_RTMP_URL "https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz"
 
 ENV BUILD_PACKAGES "build-base linux-headers openssl-dev pcre-dev wget zlib-dev"
 ENV RUNTIME_PACKAGES "ca-certificates openssl pcre zlib"
