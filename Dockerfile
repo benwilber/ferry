@@ -3,7 +3,7 @@ MAINTAINER Ben Wilber "https://github.com/benwilber"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
-VOLUME ["/var/cache/nginx/www/live"]
+VOLUME ["/var/cache/nginx", "/var/www"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
@@ -56,6 +56,7 @@ RUN cd /tmp/nginx-${NGINX_VERSION} && \
 
 RUN cd /tmp/nginx-${NGINX_VERSION} && make && make install
 RUN adduser -D nginx
+RUN mkdir -p /var/www/{html,live,keys}
 RUN rm -rf /tmp/*
 RUN apk del ${build_pkgs}
 RUN rm -rf /var/cache/apk/*
