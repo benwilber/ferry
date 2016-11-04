@@ -1,5 +1,5 @@
 FROM alpine:latest
-MAINTAINER Ben Wilber "https://github.com/benwilber"
+MAINTAINER Ben Wilber "https://github.com/benwilber/ferry"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
