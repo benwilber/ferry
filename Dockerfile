@@ -53,10 +53,9 @@ RUN cd /tmp/nginx-${NGINX_VERSION} && \
     --with-http_slice_module \
     --with-file-aio \
     --with-http_v2_module \
-    --with-ipv6 \
     --add-module=../nginx-rtmp-module-${NGINX_RTMP_VERSION}
 
-RUN cd /tmp && make && make install
+RUN cd /tmp/nginx-${NGINX_VERSION} && make && make install
 RUN adduser -D nginx
 RUN rm -rf /tmp/*
 RUN apk del ${build_pkgs}
