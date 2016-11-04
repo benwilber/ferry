@@ -56,9 +56,10 @@ RUN cd /tmp/nginx-${NGINX_VERSION} && \
 
 RUN cd /tmp/nginx-${NGINX_VERSION} && make && make install
 RUN adduser -D nginx
-RUN mkdir -p /var/www/{html,live,keys}
+RUN mkdir -p /var/www/{public,live,keys}
 RUN rm -rf /tmp/*
 RUN apk del ${build_pkgs}
 RUN rm -rf /var/cache/apk/*
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY public/* /var/www/public/
