@@ -3,7 +3,7 @@ MAINTAINER Ben Wilber "https://github.com/benwilber/ferry"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
-VOLUME ["/var/cache/nginx", "/var/www"]
+VOLUME ["/var/cache/nginx"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
@@ -56,10 +56,10 @@ RUN cd /tmp/nginx-${NGINX_VERSION} && \
 
 RUN cd /tmp/nginx-${NGINX_VERSION} && make && make install
 RUN adduser -D nginx
-RUN mkdir -p /var/www/{public,live,keys}
+RUN mkdir -p /var/cache/nginx/{public,live,keys}
 RUN rm -rf /tmp/*
 RUN apk del ${build_pkgs}
 RUN rm -rf /var/cache/apk/*
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY public/* /var/www/public/
+COPY public/* /var/cache/nginx/public/
