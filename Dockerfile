@@ -3,7 +3,7 @@ MAINTAINER Ben Wilber "https://github.com/benwilber"
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
-VOLUME ["/var/cache/nginx"]
+VOLUME ["/var/cache/nginx/www/live"]
 
 ENV NGINX_VERSION 1.11.5
 ENV NGINX_RTMP_VERSION 1.1.10
@@ -17,7 +17,6 @@ ENV RUNTIME_PACKAGES "ca-certificates openssl pcre zlib"
 RUN apk --update add ${BUILD_PACKAGES} ${RUNTIME_PACKAGES}
 RUN wget -qO- ${NGINX_URL} | tar zx -C /tmp
 RUN wget -qO- ${NGINX_RTMP_URL} | tar zx -C /tmp
-RUN mkdir -p /var/cache/nginx/www/live
 RUN cd /tmp/nginx-${NGINX_VERSION} && \
     ./configure \
     --prefix=/etc/nginx \
